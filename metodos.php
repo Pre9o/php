@@ -1,15 +1,17 @@
 <?php
 
 class Carro {
-    private $nome;
-    private $modelo;
-    private $ano;
+    public $nome;
+    protected $modelo;
+    public $ano;
     private $velocidade;
+    public $cor;
 
-    public function __construct($nome, $modelo, $ano) {
+    public function __construct($nome, $modelo, $ano, $cor) {
         $this->nome = $nome;
-        $this->modelo = $modelo;
+        $this->setModelo($modelo);
         $this->ano = $ano;
+        $this->setCor($cor);
         $this->velocidade = 0;
     }
 
@@ -33,10 +35,6 @@ class Carro {
         return $this->ano;
     }
 
-    public function setAno(int $ano): void {
-        $this->ano = $ano;
-    }
-
     public function getVelocidade(): int {
         return $this->velocidade;
     }
@@ -52,18 +50,33 @@ class Carro {
     public function frear(): void {
         $this->velocidade -= 10;
     }
+
+    public function getCor(): string {
+        return $this->cor;
+    }
+
+    public function setCor(string $cor): void {
+        $this->cor = $cor;
+    }
+
+    private function gerarCorAleatoria(): string {
+        $cores = array("Preto", "Branco", "Vermelho", "Azul", "Verde", "Amarelo");
+        return $cores[array_rand($cores)];
+    }
 }
 
 class Livro {
-    private $titulo;
-    private $autor;
-    private $paginas;
+    public $titulo;
+    protected $autor;
+    public $paginas;
     private $emprestado;
+    public $genero;
 
-    public function __construct($titulo, $autor, $paginas) {
+    public function __construct($titulo, $autor, $paginas, $genero) {
         $this->titulo = $titulo;
         $this->autor = $autor;
         $this->paginas = $paginas;
+        $this->setGenero($genero);
         $this->emprestado = false;
     }
 
@@ -79,16 +92,8 @@ class Livro {
         return $this->autor;
     }
 
-    public function setAutor(string $autor): void {
-        $this->autor = $autor;
-    }
-
     public function getPaginas(): int {
         return $this->paginas;
-    }
-
-    public function setPaginas(int $paginas): void {
-        $this->paginas = $paginas;
     }
 
     public function isEmprestado(): bool {
@@ -102,26 +107,44 @@ class Livro {
     public function devolver(): void {
         $this->emprestado = false;
     }
+
+    public function getGenero(): string {
+        return $this->genero;
+    }
+
+    public function setGenero(string $genero): void {
+        $this->genero = $genero;
+    }
 }
 
 // Testing
+echo "Iniciando teste dos métodos do carro... \n";
 
-$carro = new Carro("Toyota", "SW4", 2024);
-echo "Carro: {$carro->getNome()} {$carro->getModelo()} ({$carro->getAno()})\n";
-echo "Acelerando o carro...\n";
+$carro = new Carro("Fusca", "Fusca 1300", 1972, "Azul");
+echo "Nome: {$carro->getNome()} \n";
+echo "Modelo: {$carro->getModelo()} \n";
+echo "Ano: {$carro->getAno()} \n";
+echo "Cor: {$carro->getCor()} \n";
+echo "Velocidade: {$carro->getVelocidade()} \n";
+echo "Acelerando... \n";
 $carro->acelerar();
-echo "Velocidade atual: {$carro->getVelocidade()} km/h\n";
-echo "Freando o carro...\n";
+echo "Velocidade: {$carro->getVelocidade()} \n";
 $carro->frear();
-echo "Velocidade atual após frear: {$carro->getVelocidade()} km/h\n\n";
+echo "Freando... \n";
+echo "Velocidade: {$carro->getVelocidade()} \n\n";
 
 
+echo "Iniciando teste dos métodos do livro... \n";
 
-$livro = new Livro("A República", "Platão", 344);
-echo "Livro: {$livro->getTitulo()} - {$livro->getAutor()} ({$livro->getPaginas()} páginas)\n";
-echo "Emprestando o livro...\n";
+$livro = new Livro("O Senhor dos Anéis", "J.R.R. Tolkien", 1200, "Fantasia");
+echo "Título: {$livro->getTitulo()} \n";
+echo "Autor: {$livro->getAutor()} \n";
+echo "Páginas: {$livro->getPaginas()} \n";
+echo "Gênero: {$livro->getGenero()} \n";
+echo "Emprestado: " . ($livro->isEmprestado() ? "Sim" : "Não") . "\n";
+echo "Emprestando... \n";
 $livro->emprestar();
-echo "O livro está emprestado? " . ($livro->isEmprestado() ? "Sim" : "Não") . "\n";
-echo "Devolvendo o livro...\n";
+echo "Emprestado: " . ($livro->isEmprestado() ? "Sim" : "Não") . "\n";
+echo "Devolvendo... \n";
 $livro->devolver();
-echo "O livro está emprestado? " . ($livro->isEmprestado() ? "Sim" : "Não") . "\n";
+echo "Emprestado: " . ($livro->isEmprestado() ? "Sim" : "Não") . "\n\n";
